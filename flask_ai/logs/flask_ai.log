@@ -1,0 +1,41 @@
+2026-07-30 13:11:57,237 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.156.223.253:5000
+2026-07-30 13:11:57,237 | INFO | [33mPress CTRL+C to quit[0m
+2026-07-30 13:11:57,238 | INFO |  * Restarting with stat
+2026-07-30 13:11:57,477 | WARNING |  * Debugger is active!
+2026-07-30 13:11:57,482 | INFO |  * Debugger PIN: 124-466-936
+2026-07-30 13:12:21,263 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.156.223.253:5000
+2026-07-30 13:12:21,263 | INFO | [33mPress CTRL+C to quit[0m
+2026-07-30 13:12:21,265 | INFO |  * Restarting with stat
+2026-07-30 13:12:21,506 | WARNING |  * Debugger is active!
+2026-07-30 13:12:21,508 | INFO |  * Debugger PIN: 124-466-936
+2026-07-30 13:12:33,712 | INFO | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.156.223.253:5000
+2026-07-30 13:12:33,712 | INFO | [33mPress CTRL+C to quit[0m
+2026-07-30 13:12:33,712 | INFO |  * Restarting with stat
+2026-07-30 13:12:33,914 | WARNING |  * Debugger is active!
+2026-07-30 13:12:33,922 | INFO |  * Debugger PIN: 124-466-936
+2026-07-30 13:13:00,886 | INFO | 127.0.0.1 - - [30/Jul/2026 13:13:00] "GET /health HTTP/1.1" 200 -
+2026-07-30 13:13:00,931 | INFO | 127.0.0.1 - - [30/Jul/2026 13:13:00] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-07-30 13:13:42,059 | INFO | 127.0.0.1 - - [30/Jul/2026 13:13:42] "GET /health HTTP/1.1" 200 -
+2026-07-30 13:15:03,586 | INFO |  * Detected change in '/home/lokesh-goparaju/loki/Quantathon/flask_ai/explainability/gradcam.py', reloading
+2026-07-30 13:15:03,675 | INFO |  * Restarting with stat
+2026-07-30 13:15:03,866 | WARNING |  * Debugger is active!
+2026-07-30 13:15:03,868 | INFO |  * Debugger PIN: 124-466-936
+2026-07-30 13:15:11,905 | INFO |  * Detected change in '/home/lokesh-goparaju/loki/Quantathon/flask_ai/explainability/shap.py', reloading
+2026-07-30 13:15:11,988 | INFO |  * Restarting with stat
+2026-07-30 13:15:12,216 | WARNING |  * Debugger is active!
+2026-07-30 13:15:12,221 | INFO |  * Debugger PIN: 124-466-936
+2026-07-30 13:15:23,275 | INFO |  * Detected change in '/home/lokesh-goparaju/loki/Quantathon/flask_ai/explainability/visualization.py', reloading
+2026-07-30 13:15:23,339 | INFO |  * Restarting with stat
+2026-07-30 13:15:23,532 | WARNING |  * Debugger is active!
+2026-07-30 13:15:23,537 | INFO |  * Debugger PIN: 124-466-936
+2026-07-30 13:15:52,672 | INFO |  * Detected change in '/home/lokesh-goparaju/loki/Quantathon/flask_ai/app.py', reloading
+2026-07-30 13:15:52,759 | INFO |  * Restarting with stat
