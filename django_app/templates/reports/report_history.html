@@ -81,7 +81,7 @@
                         <td class="text-end">
                             <div class="btn-group btn-group-sm">
                                 <a href="{% url 'reports:detail' rep.pk %}" class="btn btn-light border" title="View Full Report"><i class="bi bi-eye text-primary"></i> View</a>
-                                <button type="button" onclick="simulatePDFDownload('{{ rep.report_number }}')" class="btn btn-light border" title="Download PDF"><i class="bi bi-file-earmark-pdf text-danger"></i> PDF</button>
+                                <a href="{% url 'reports:pdf' rep.pk %}" target="_blank" class="btn btn-light border" title="Download / Print PDF"><i class="bi bi-file-earmark-pdf text-danger"></i> PDF</a>
                                 <a href="{% url 'reports:delete' rep.pk %}" class="btn btn-light border" title="Delete Report"><i class="bi bi-trash text-danger"></i></a>
                             </div>
                         </td>
