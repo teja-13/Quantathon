@@ -1,0 +1,51 @@
+/* Medical Report Styling & Print Media */
+
+.report-document {
+  background: white;
+  padding: 3rem;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.report-header {
+  border-bottom: 3px solid var(--primary-color);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.report-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 5rem;
+  color: rgba(21, 101, 192, 0.04);
+  font-weight: 900;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+@media print {
+  body {
+    background: white !important;
+  }
+  .sidebar, .navbar, .btn-print-hide, .footer, .breadcrumb-container {
+    display: none !important;
+  }
+  .main-content {
+    margin-left: 0 !important;
+  }
+  .content-body {
+    padding: 0 !important;
+  }
+  .report-document {
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+}

@@ -1,0 +1,17 @@
+/* Responsive Design Rules */
+
+@media (max-width: 991.98px) {
+  .main-content {
+    margin-left: 0;
+  }
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 1045;
+  }
+  .sidebar.show {
+    transform: translateX(0);
+  }
+  .content-body {
+    padding: 1.25rem 1rem;
+  }
+}

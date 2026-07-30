@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Processing Diagnostic Scan - OncoVision AI{% endblock %}
+
+{% block content %}
+<input type="hidden" id="redirect_url_target" value="{% url 'diagnosis:result' diagnosis.pk %}">
+
+<div class="row justify-content-center align-items-center py-5">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card med-card p-4 p-md-5 text-center shadow-lg border-0">
+            
+            <div class="mb-4">
+                <div class="spinner-medical mb-3"></div>
+                <h3 class="fw-bold text-dark mb-1">Running AI Diagnostic Pipeline</h3>
+                <p class="text-muted small mb-0">Analyzing medical scan for patient <strong>{{ diagnosis.patient.full_name }}</strong></p>
+                <span class="badge bg-light text-primary border mt-2"><i class="bi bi-magic me-1"></i> Automated Organ Detection & Malignancy Screening</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress mb-4" style="height: 18px; border-radius: 9px; background-color: #E3F2FD;">
+                <div id="processing_progress_bar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 15%; font-weight: 600; font-size: 0.75rem;">15%</div>
+            </div>
+
+            <!-- Animated Step Items -->
+            <div class="text-start space-y-3 px-2">
+                <div class="d-flex align-items-center justify-content-between p-3 rounded-3 bg-light border mb-2 processing-step-item active">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="bi bi-cloud-check fs-4 text-primary"></i>
+                        <div>
+                            <div class="fw-semibold text-dark">1. Uploading Medical Image</div>
+                            <div class="text-muted small">Verifying image resolution & tensor dimensions</div>
+                        </div>
+                    </div>
+                    <i class="bi bi-hourglass-split step-status-icon text-muted"></i>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between p-3 rounded-3 bg-light border mb-2 processing-step-item">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="bi bi-search fs-4 text-secondary"></i>
+                        <div>
+                            <div class="fw-semibold text-dark">2. Identifying Organ Scan Type</div>
+                            <div class="text-muted small">Auto-classifying organ modality (Brain, Lung, Liver, Breast, Colon)</div>
+                        </div>
+                    </div>
+                    <i class="bi bi-hourglass-split step-status-icon text-muted"></i>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between p-3 rounded-3 bg-light border mb-2 processing-step-item">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="bi bi-cpu fs-4 text-info"></i>
+                        <div>
+                            <div class="fw-semibold text-dark">3. Screening for Cancerous Lesions</div>
+                            <div class="text-muted small">Executing convolutional neural network for malignancy detection</div>
+                        </div>
+                    </div>
+                    <i class="bi bi-hourglass-split step-status-icon text-muted"></i>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between p-3 rounded-3 bg-light border mb-2 processing-step-item">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="bi bi-file-earmark-check fs-4 text-success"></i>
+                        <div>
+                            <div class="fw-semibold text-dark">4. Generating Diagnostic Summary & Report</div>
+                            <div class="text-muted small">Formatting confidence score, stage, and GradCAM explainability</div>
+                        </div>
+                    </div>
+                    <i class="bi bi-hourglass-split step-status-icon text-muted"></i>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

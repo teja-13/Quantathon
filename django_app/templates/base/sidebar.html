@@ -1,0 +1,78 @@
+{% load static %}
+<aside class="sidebar bg-white border-end position-fixed top-0 bottom-0 start-0 d-flex flex-column" id="app_sidebar" style="width: var(--sidebar-width); z-index: 1040;">
+    <!-- Sidebar Brand Header -->
+    <div class="px-4 py-3 border-bottom d-flex align-items-center justify-content-between">
+        <a href="{% url 'dashboard:index' %}" class="d-flex align-items-center gap-2 text-decoration-none">
+            <div class="rounded-3 p-2 text-white d-flex align-items-center justify-content-center" style="background-color: var(--primary-color); width: 36px; height: 36px;">
+                <i class="bi bi-heart-pulse-fill fs-5"></i>
+            </div>
+            <div class="d-flex flex-column">
+                <span class="fw-bold text-dark lh-1" style="font-size: 1.1rem; letter-spacing: -0.5px;">ONCO<span style="color: var(--primary-color);">VISION</span></span>
+                <span class="text-muted small" style="font-size: 0.68rem; letter-spacing: 0.5px;">AI CANCER DIAGNOSTICS</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Navigation Menu Items -->
+    <div class="py-3 px-3 flex-grow-1 overflow-y-auto">
+        <div class="text-uppercase text-muted px-3 mb-2 font-monospace" style="font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;">Core System</div>
+        <ul class="nav nav-pills flex-column gap-1 mb-4">
+            <li class="nav-item">
+                <a href="{% url 'dashboard:index' %}" class="nav-link d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 text-dark fw-medium {% if request.resolver_match.app_name == 'dashboard' %}active text-white bg-primary{% endif %}">
+                    <i class="bi bi-grid-1x2-fill fs-5"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'patients:list' %}" class="nav-link d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 text-dark fw-medium {% if request.resolver_match.app_name == 'patients' %}active text-white bg-primary{% endif %}">
+                    <i class="bi bi-people-fill fs-5"></i>
+                    <span>Patients</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'diagnosis:select' %}" class="nav-link d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 text-dark fw-medium {% if request.resolver_match.app_name == 'diagnosis' %}active text-white bg-primary{% endif %}">
+                    <i class="bi bi-cpu-fill fs-5"></i>
+                    <span>Cancer Detection</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'reports:history' %}" class="nav-link d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 text-dark fw-medium {% if request.resolver_match.app_name == 'reports' and request.resolver_match.url_name != 'history' %}active text-white bg-primary{% endif %}">
+                    <i class="bi bi-file-earmark-medical-fill fs-5"></i>
+                    <span>Reports</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'history:index' %}" class="nav-link d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 text-dark fw-medium {% if request.resolver_match.app_name == 'history' or request.resolver_match.url_name == 'history' %}active text-white bg-primary{% endif %}">
+                    <i class="bi bi-clock-history fs-5"></i>
+                    <span>History</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="text-uppercase text-muted px-3 mb-2 font-monospace" style="font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;">Preferences</div>
+        <ul class="nav nav-pills flex-column gap-1">
+            <li class="nav-item">
+                <a href="{% url 'accounts:profile' %}" class="nav-link d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 text-dark fw-medium {% if request.resolver_match.url_name == 'profile' %}active text-white bg-primary{% endif %}">
+                    <i class="bi bi-person-circle fs-5"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'system_settings:settings' %}" class="nav-link d-flex align-items-center gap-3 px-3 py-2.5 rounded-3 text-dark fw-medium {% if request.resolver_match.app_name == 'system_settings' %}active text-white bg-primary{% endif %}">
+                    <i class="bi bi-gear-fill fs-5"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Sidebar Bottom Action -->
+    <div class="p-3 border-top bg-light">
+        <form action="{% url 'accounts:logout' %}" method="POST" class="m-0">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2 py-2 fw-medium">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </button>
+        </form>
+    </div>
+</aside>

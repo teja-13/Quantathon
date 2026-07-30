@@ -1,0 +1,92 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Select MRI / Scan Region - OncoVision AI{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4" style="max-width: 720px; margin: 0 auto;">
+    <span class="badge bg-light text-primary border mb-2 px-3 py-1.5 rounded-5 fw-semibold"><i class="bi bi-cpu me-1"></i> Multi-Organ AI Diagnostic Engine</span>
+    <h2 class="fw-bold text-dark mb-2">Select MRI & Scan Target Area</h2>
+    <p class="text-muted small">Choose an anatomical region model target for automated malignancy classification.</p>
+</div>
+
+<!-- Interactive Category Filter Buttons -->
+<div class="d-flex flex-wrap justify-content-center gap-2 mb-4" id="category_buttons">
+    <button type="button" class="btn btn-primary-med rounded-5 px-3 py-1.5 category-btn active" data-category="all">
+        <i class="bi bi-grid-fill me-1"></i> All Regions
+    </button>
+    <button type="button" class="btn btn-light border rounded-5 px-3 py-1.5 category-btn" data-category="brain">
+        <i class="bi bi-brain me-1"></i> Brain
+    </button>
+    <button type="button" class="btn btn-light border rounded-5 px-3 py-1.5 category-btn" data-category="lung">
+        <i class="bi bi-lungs me-1"></i> Lung
+    </button>
+    <button type="button" class="btn btn-light border rounded-5 px-3 py-1.5 category-btn" data-category="liver">
+        <i class="bi bi-capsule me-1"></i> Liver
+    </button>
+    <button type="button" class="btn btn-light border rounded-5 px-3 py-1.5 category-btn" data-category="breast">
+        <i class="bi bi-activity me-1"></i> Breast
+    </button>
+    <button type="button" class="btn btn-light border rounded-5 px-3 py-1.5 category-btn" data-category="kidney">
+        <i class="bi bi-segmented-nav me-1"></i> Kidney
+    </button>
+</div>
+
+<!-- Modality Cards Grid -->
+<div class="row g-4 justify-content-center" id="cancer_cards_grid">
+    {% for item in cancer_types %}
+        <div class="col-12 col-md-6 col-lg-4 cancer-card-col" data-category="{{ item.category }}">
+            <div class="card med-card h-100 p-4 text-center d-flex flex-column align-items-center justify-content-between position-relative overflow-hidden">
+                <div class="rounded-circle p-3 mb-3 text-white d-flex align-items-center justify-content-center shadow-sm" style="background-color: {{ item.color }}; width: 64px; height: 64px;">
+                    <i class="bi {{ item.icon }} fs-2"></i>
+                </div>
+
+                <div>
+                    <h4 class="fw-bold text-dark mb-2">{{ item.name }}</h4>
+                    <p class="text-muted small mb-4" style="line-height: 1.5;">
+                        {{ item.description }}
+                    </p>
+                </div>
+
+                <a href="{% url 'diagnosis:upload' %}?type={{ item.code }}" class="btn btn-primary-med w-100 fw-semibold d-flex align-items-center justify-content-center gap-2">
+                    <span>Select {{ item.name }}</span>
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const cards = document.querySelectorAll('.cancer-card-col');
+
+    categoryBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const selectedCategory = this.getAttribute('data-category');
+            
+            // Toggle active state on buttons
+            categoryBtns.forEach(b => {
+                b.classList.remove('btn-primary-med', 'active');
+                b.classList.add('btn-light', 'border');
+            });
+            this.classList.remove('btn-light', 'border');
+            this.classList.add('btn-primary-med', 'active');
+
+            // Filter cards
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                if (selectedCategory === 'all' || cardCat === selectedCategory) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

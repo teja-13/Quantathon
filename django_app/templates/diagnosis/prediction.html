@@ -1,0 +1,130 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Diagnostic Prediction Result - OncoVision AI{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <span class="badge bg-light text-success border mb-1 px-3 py-1 rounded-5"><i class="bi bi-check-circle me-1"></i> Automated Classification Complete</span>
+        <h3 class="fw-bold text-dark mb-0">AI Diagnostic Prediction Result</h3>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="{% url 'diagnosis:select' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Back to Selection
+        </a>
+        <a href="{% url 'diagnosis:upload' %}" class="btn btn-light border">
+            <i class="bi bi-cloud-arrow-up me-1"></i> Upload Another Scan
+        </a>
+        <a href="{% url 'reports:generate' diagnosis.pk %}" class="btn btn-primary-med">
+            <i class="bi bi-file-earmark-pdf me-1"></i> Generate Medical Report
+        </a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Left Column: Patient & Scan Preview -->
+    <div class="col-12 col-lg-5">
+        <div class="card med-card p-4 h-100 text-center">
+            <h5 class="fw-bold mb-3 text-start border-bottom pb-2"><i class="bi bi-file-image text-primary me-2"></i> Input Medical Scan</h5>
+            
+            {% if diagnosis.medical_image %}
+                <img src="{{ diagnosis.medical_image.url }}" alt="Scan Image" class="img-fluid rounded-3 border shadow-sm mb-3 object-fit-cover" style="max-height: 280px; width: 100%;">
+            {% else %}
+                <img src="{% static 'images/brain-cancer.svg' %}" alt="Placeholder Scan" class="img-fluid rounded-3 border mb-3">
+            {% endif %}
+
+            <div class="p-3 bg-light rounded-3 text-start border">
+                <div class="row g-2 small">
+                    <div class="col-6"><span class="text-muted d-block">Patient Name</span><strong class="text-dark">{{ diagnosis.patient.full_name }}</strong></div>
+                    <div class="col-6"><span class="text-muted d-block">Age / Gender</span><strong>{{ diagnosis.patient.age }} yrs / {{ diagnosis.patient.gender }}</strong></div>
+                    <div class="col-12">
+                        <span class="text-muted d-block">Identified Organ Scan Modality</span>
+                        <span class="badge bg-primary text-white fs-6 px-3 py-1.5 rounded-3 mt-1">
+                            <i class="bi bi-magic me-1"></i> {{ diagnosis.cancer_type }}
+                        </span>
+                        {% if diagnosis.organ_confidence %}
+                            <span class="text-muted small ms-1">({{ diagnosis.organ_confidence }}% Organ Match)</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: AI Prediction Breakdown -->
+    <div class="col-12 col-lg-7">
+        <div class="card med-card p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+                <h5 class="fw-bold mb-3 border-bottom pb-2"><i class="bi bi-cpu text-secondary me-2"></i> Malignancy & Classification Analysis</h5>
+
+                <!-- Primary Outcome Banner -->
+                <div class="p-4 rounded-4 mb-4 border d-flex align-items-center justify-content-between {% if diagnosis.prediction == 'Cancerous' %}bg-danger bg-opacity-10 border-danger-subtle{% else %}bg-success bg-opacity-10 border-success-subtle{% endif %}">
+                    <div>
+                        <span class="text-uppercase font-monospace small fw-bold text-muted d-block mb-1">Malignancy Screening Result</span>
+                        <h2 class="fw-bold mb-0 {% if diagnosis.prediction == 'Cancerous' %}text-danger{% else %}text-success{% endif %}">
+                            {% if diagnosis.prediction == 'Cancerous' %}
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i> CANCEROUS PATTERN DETECTED
+                            {% else %}
+                                <i class="bi bi-check-circle-fill me-2"></i> NO CANCEROUS LESION DETECTED
+                            {% endif %}
+                        </h2>
+                    </div>
+                    <span class="fs-4 fw-bold {% if diagnosis.prediction == 'Cancerous' %}badge-cancerous{% else %}badge-non-cancerous{% endif %} px-3 py-2">
+                        {{ diagnosis.confidence }}% Confidence
+                    </span>
+                </div>
+
+                <!-- Numerical Metrics Table -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-sm-4">
+                        <div class="p-3 bg-light rounded-3 border text-center">
+                            <span class="text-muted small d-block">Organ Identification</span>
+                            <span class="fs-6 fw-bold text-primary">{{ diagnosis.cancer_type }}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <div class="p-3 bg-light rounded-3 border text-center">
+                            <span class="text-muted small d-block">Malignancy Probability</span>
+                            <span class="fs-4 fw-bold text-dark">{{ diagnosis.probability }}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <div class="p-3 bg-light rounded-3 border text-center">
+                            <span class="text-muted small d-block">Inference Speed</span>
+                            <span class="fs-4 fw-bold text-secondary">{{ diagnosis.processing_time }}s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estimated Stage -->
+                <div class="mb-4">
+                    <label class="fw-semibold text-muted small text-uppercase font-monospace d-block mb-1">Estimated Clinical Staging</label>
+                    <div class="p-3 bg-white border rounded-3 fw-bold text-dark d-flex align-items-center justify-content-between">
+                        <span><i class="bi bi-diagram-3 text-warning me-2 fs-5"></i> {{ diagnosis.estimated_stage }}</span>
+                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle">AI Estimate</span>
+                    </div>
+                </div>
+
+                <!-- Technical Explanation Card -->
+                <div class="mb-4">
+                    <label class="fw-semibold text-muted small text-uppercase font-monospace d-block mb-1">Neural Network Explanation</label>
+                    <p class="p-3 bg-light border rounded-3 small text-muted mb-0" style="line-height: 1.6;">
+                        {{ diagnosis.model_explanation }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Action Buttons Footer -->
+            <div class="d-flex flex-wrap gap-2 pt-3 border-top">
+                <a href="{% url 'diagnosis:explainability' diagnosis.pk %}" class="btn btn-secondary-med flex-grow-1 fw-semibold py-2">
+                    <i class="bi bi-diagram-2 me-2"></i> View Grad-CAM & Heatmap Explainability
+                </a>
+                <a href="{% url 'reports:generate' diagnosis.pk %}" class="btn btn-primary-med flex-grow-1 fw-semibold py-2">
+                    <i class="bi bi-file-earmark-pdf me-2"></i> Generate & Print Report
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
