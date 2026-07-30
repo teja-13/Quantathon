@@ -1,0 +1,15 @@
+Flask
+Flask-Cors
+python-dotenv
+
+numpy
+opencv-python-headless
+Pillow
+
+joblib
+scikit-learn
+
+matplotlib
+
+pytest
+gunicorn
