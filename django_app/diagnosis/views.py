@@ -105,12 +105,34 @@ class UploadDiagnosisView(LoginRequiredMixin, FormView):
         diagnosis.confidence = res['confidence']
         diagnosis.probability = res['probability']
         diagnosis.processing_time = res['processing_time']
-        diagnosis.estimated_stage = res['estimated_stage']
+        diagnosis.estimated_stage = res.get('estimated_stage', '')
         diagnosis.model_explanation = res['model_explanation']
         diagnosis.status = 'Completed'
         diagnosis.save()
 
-        messages.success(self.request, f"Scan uploaded successfully! Running AI diagnostic pipeline for {diagnosis.cancer_type}...")
+        # Automatically generate and save MedicalReport to history archive
+        from reports.models import MedicalReport
+        from services.api_client import generate_report
+        from accounts.models import ActivityLog
+
+        report, created = MedicalReport.objects.get_or_create(diagnosis=diagnosis)
+        if created or not report.report_number:
+            payload = generate_report({
+                'cancer_type': diagnosis.cancer_type,
+                'patient_name': diagnosis.patient.full_name,
+            })
+            report.report_number = payload['report_number']
+            report.treatment_guidelines = payload['treatment_guidelines']
+            report.doctor_notes = payload['doctor_notes']
+            report.save()
+
+        if self.request.user.is_authenticated:
+            ActivityLog.objects.create(
+                user=self.request.user,
+                action=f"Generated & Saved Medical Report #{report.report_number} for Patient {diagnosis.patient.full_name} ({diagnosis.cancer_type} - {diagnosis.prediction})"
+            )
+
+        messages.success(self.request, f"Scan analyzed & Medical Report #{report.report_number} saved to history archive!")
         return redirect('diagnosis:processing', pk=diagnosis.pk)
 
 class ProcessingView(LoginRequiredMixin, DetailView):

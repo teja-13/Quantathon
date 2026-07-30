@@ -1,8 +1,10 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
 from patients.models import Patient
 from diagnosis.models import Diagnosis
+from diagnosis.forms import UploadDiagnosisForm
 
 class DiagnosisTestCase(TestCase):
     def setUp(self):
@@ -33,3 +35,18 @@ class DiagnosisTestCase(TestCase):
         self.client.login(username='doc', password='pwd')
         response = self.client.get(reverse('diagnosis:explainability', kwargs={'pk': self.diagnosis.pk}))
         self.assertEqual(response.status_code, 200)
+
+    def test_upload_form_accepts_nifti_extensions(self):
+        nii_file = SimpleUploadedFile('scan.nii', b'nifti-bytes', content_type='application/octet-stream')
+        form = UploadDiagnosisForm(
+            data={'patient': self.patient.pk, 'cancer_type': 'Brain Cancer'},
+            files={'medical_image': nii_file}
+        )
+        self.assertTrue(form.is_valid(), form.errors)
+
+        nii_gz_file = SimpleUploadedFile('scan.nii.gz', b'nifti-gz-bytes', content_type='application/gzip')
+        form_gz = UploadDiagnosisForm(
+            data={'patient': self.patient.pk, 'cancer_type': 'Brain Cancer'},
+            files={'medical_image': nii_gz_file}
+        )
+        self.assertTrue(form_gz.is_valid(), form_gz.errors)

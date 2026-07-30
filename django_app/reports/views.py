@@ -46,8 +46,23 @@ class ReportDetailView(LoginRequiredMixin, DetailView):
         if form.is_valid():
             form.save()
             messages.success(request, "Report notes and clinical guidelines saved.")
-            return redirect('reports:detail', pk=report.pk)
         return self.get(request, *args, **kwargs)
+
+class ReportPDFView(LoginRequiredMixin, DetailView):
+    model = MedicalReport
+    template_name = 'reports/report_print.html'
+    context_object_name = 'report'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        report = self.get_object()
+        from services.api_client import ai_client
+        info = ai_client.CANCER_DESCRIPTIONS.get(
+            report.diagnosis.cancer_type,
+            ai_client.CANCER_DESCRIPTIONS['Brain Cancer']
+        )
+        context['feature_importance'] = info['features']
+        return context
 
 class ReportHistoryListView(LoginRequiredMixin, ListView):
     model = MedicalReport

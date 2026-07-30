@@ -14,12 +14,12 @@
         <a href="{% url 'reports:history' %}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left me-1"></i> Back to History
         </a>
-        <button type="button" onclick="simulatePDFDownload('{{ report.report_number }}')" class="btn btn-light border">
+        <a href="{% url 'reports:pdf' report.pk %}" target="_blank" class="btn btn-light border">
             <i class="bi bi-file-earmark-pdf text-danger me-1"></i> Download PDF
-        </button>
-        <button type="button" onclick="printMedicalReport()" class="btn btn-primary-med">
+        </a>
+        <a href="{% url 'reports:pdf' report.pk %}" target="_blank" class="btn btn-primary-med">
             <i class="bi bi-printer me-1"></i> Print Report
-        </button>
+        </a>
     </div>
 </div>
 
@@ -71,9 +71,7 @@
                         {% else %}
                             <span class="badge-non-cancerous">Non-Cancerous Pattern</span>
                         {% endif %}
-                    </td></tr>
                     <tr><td class="text-muted">Confidence Score:</td><td class="fw-bold">{{ report.diagnosis.confidence }}%</td></tr>
-                    <tr><td class="text-muted">Estimated Stage:</td><td class="fw-semibold text-warning">{{ report.diagnosis.estimated_stage }}</td></tr>
                     <tr><td class="text-muted">Inference Speed:</td><td class="fw-mono">{{ report.diagnosis.processing_time }} seconds</td></tr>
                 </table>
             </div>

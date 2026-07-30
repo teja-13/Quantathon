@@ -16,8 +16,8 @@
         <a href="{% url 'diagnosis:upload' %}" class="btn btn-light border">
             <i class="bi bi-cloud-arrow-up me-1"></i> Upload Another Scan
         </a>
-        <a href="{% url 'reports:generate' diagnosis.pk %}" class="btn btn-primary-med">
-            <i class="bi bi-file-earmark-pdf me-1"></i> Generate Medical Report
+        <a href="{% if diagnosis.report %}{% url 'reports:detail' diagnosis.report.pk %}{% else %}{% url 'reports:generate' diagnosis.pk %}{% endif %}" class="btn btn-primary-med">
+            <i class="bi bi-file-earmark-text me-1"></i> View Saved Medical Report
         </a>
     </div>
 </div>
@@ -97,14 +97,7 @@
                     </div>
                 </div>
 
-                <!-- Estimated Stage -->
-                <div class="mb-4">
-                    <label class="fw-semibold text-muted small text-uppercase font-monospace d-block mb-1">Estimated Clinical Staging</label>
-                    <div class="p-3 bg-white border rounded-3 fw-bold text-dark d-flex align-items-center justify-content-between">
-                        <span><i class="bi bi-diagram-3 text-warning me-2 fs-5"></i> {{ diagnosis.estimated_stage }}</span>
-                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle">AI Estimate</span>
-                    </div>
-                </div>
+
 
                 <!-- Technical Explanation Card -->
                 <div class="mb-4">
@@ -120,8 +113,8 @@
                 <a href="{% url 'diagnosis:explainability' diagnosis.pk %}" class="btn btn-secondary-med flex-grow-1 fw-semibold py-2">
                     <i class="bi bi-diagram-2 me-2"></i> View Grad-CAM & Heatmap Explainability
                 </a>
-                <a href="{% url 'reports:generate' diagnosis.pk %}" class="btn btn-primary-med flex-grow-1 fw-semibold py-2">
-                    <i class="bi bi-file-earmark-pdf me-2"></i> Generate & Print Report
+                <a href="{% if diagnosis.report %}{% url 'reports:detail' diagnosis.report.pk %}{% else %}{% url 'reports:generate' diagnosis.pk %}{% endif %}" class="btn btn-primary-med flex-grow-1 fw-semibold py-2">
+                    <i class="bi bi-file-earmark-text me-2"></i> View Saved Medical Report
                 </a>
             </div>
         </div>

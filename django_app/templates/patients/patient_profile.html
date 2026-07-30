@@ -82,7 +82,6 @@
                             <th>Cancer Type</th>
                             <th>Prediction</th>
                             <th>Confidence</th>
-                            <th>Stage</th>
                             <th class="text-end">Actions</th>
                         </tr>
                     </thead>
@@ -99,7 +98,6 @@
                                     {% endif %}
                                 </td>
                                 <td class="fw-bold">{{ diag.confidence }}%</td>
-                                <td class="small text-muted">{{ diag.estimated_stage }}</td>
                                 <td class="text-end">
                                     <div class="btn-group btn-group-sm">
                                         <a href="{% url 'diagnosis:result' diag.pk %}" class="btn btn-light border" title="View Prediction"><i class="bi bi-eye"></i></a>

@@ -13,8 +13,8 @@
         <a href="{% url 'diagnosis:result' diagnosis.pk %}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left me-1"></i> Back to Prediction
         </a>
-        <a href="{% url 'reports:generate' diagnosis.pk %}" class="btn btn-primary-med">
-            <i class="bi bi-file-earmark-pdf me-1"></i> Generate Report
+        <a href="{% if diagnosis.report %}{% url 'reports:detail' diagnosis.report.pk %}{% else %}{% url 'reports:generate' diagnosis.pk %}{% endif %}" class="btn btn-primary-med">
+            <i class="bi bi-file-earmark-text me-1"></i> View Saved Medical Report
         </a>
     </div>
 </div>
