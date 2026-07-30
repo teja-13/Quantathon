@@ -1,0 +1,150 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Cancer Detection Upload - OncoVision AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-9">
+        <div class="card med-card p-4 p-md-5">
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                <div>
+                    <span class="badge bg-light text-primary border mb-1 px-3 py-1 rounded-5"><i class="bi bi-cpu me-1"></i> AI Diagnostic Pipeline</span>
+                    <h3 class="fw-bold text-dark mb-1"><i class="bi bi-cloud-arrow-up text-primary me-2"></i> Cancer Detection & Scan Upload</h3>
+                    <p class="text-muted small mb-0">Select patient, target cancer type / organ, and upload diagnostic medical scan.</p>
+                </div>
+            </div>
+
+            <!-- Category Selection Pills -->
+            <div class="mb-4">
+                <label class="form-label d-block mb-2">Specify Type of Cancer / Scan Region:</label>
+                <div class="d-flex flex-wrap gap-1.5" id="upload_category_pills">
+                    <button type="button" class="btn btn-primary-med btn-sm rounded-5 px-3 upload-cat-btn active" data-val="Brain Cancer">
+                        <i class="bi bi-brain me-1"></i> Brain Cancer
+                    </button>
+                    <button type="button" class="btn btn-light btn-sm border rounded-5 px-3 upload-cat-btn" data-val="Lung Cancer">
+                        <i class="bi bi-lungs me-1"></i> Lung Cancer
+                    </button>
+                    <button type="button" class="btn btn-light btn-sm border rounded-5 px-3 upload-cat-btn" data-val="Liver Cancer">
+                        <i class="bi bi-capsule me-1"></i> Liver Cancer
+                    </button>
+                    <button type="button" class="btn btn-light btn-sm border rounded-5 px-3 upload-cat-btn" data-val="Breast Cancer">
+                        <i class="bi bi-activity me-1"></i> Breast Cancer
+                    </button>
+                    <button type="button" class="btn btn-light btn-sm border rounded-5 px-3 upload-cat-btn" data-val="Kidney Cancer">
+                        <i class="bi bi-segmented-nav me-1"></i> Kidney Cancer
+                    </button>
+                </div>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" id="upload_form">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger border-0 mb-4">
+                        {% for err in form.non_field_errors %}{{ err }}{% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Validation Error Banner for Client-Side JS -->
+                <div id="validation_error_box" class="alert alert-danger border-0 d-none mb-4" role="alert"></div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="patient_select" class="form-label">Patient Name *</label>
+                        {{ form.patient }}
+                        {% if form.patient.errors %}<div class="text-danger small mt-1">{{ form.patient.errors.0 }}</div>{% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="cancer_type_select" class="form-label">Type of Cancer / Model Target *</label>
+                        {{ form.cancer_type }}
+                        {% if form.cancer_type.errors %}<div class="text-danger small mt-1">{{ form.cancer_type.errors.0 }}</div>{% endif %}
+                    </div>
+                </div>
+
+                <!-- Drag & Drop Upload Zone -->
+                <div class="upload-dropzone mb-3" id="upload_dropzone">
+                    <div class="upload-icon-wrapper">
+                        <i class="bi bi-cloud-upload"></i>
+                    </div>
+                    <h5 class="fw-bold text-dark mb-1">Drag & Drop Medical Scan Image File Here</h5>
+                    <p class="text-muted small mb-3">or click anywhere in this box to select image file from computer</p>
+                    
+                    <div class="d-flex justify-content-center gap-2 mb-3">
+                        <span class="badge bg-white text-dark border"><i class="bi bi-file-image me-1"></i> JPG</span>
+                        <span class="badge bg-white text-dark border"><i class="bi bi-file-image me-1"></i> JPEG</span>
+                        <span class="badge bg-white text-dark border"><i class="bi bi-file-image me-1"></i> PNG</span>
+                        <span class="badge bg-white text-primary border"><i class="bi bi-hdd me-1"></i> Max 5MB</span>
+                    </div>
+
+                    <div class="d-none">
+                        {{ form.medical_image }}
+                    </div>
+                </div>
+
+                {% if form.medical_image.errors %}
+                    <div class="text-danger small mb-3">{{ form.medical_image.errors.0 }}</div>
+                {% endif %}
+
+                <!-- Live Image Preview Container -->
+                <div id="preview_container" class="image-preview-container d-none mb-4 p-3 bg-light">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-semibold small text-primary"><i class="bi bi-eye me-1"></i> Image Preview</span>
+                        <button type="button" class="btn-close" id="cancel_upload_btn" aria-label="Remove image"></button>
+                    </div>
+                    <img id="preview_image" src="#" alt="Scan Preview" class="image-preview-img mb-2 rounded border">
+                    <div class="d-flex justify-content-between text-muted small">
+                        <span id="preview_filename" class="text-truncate" style="max-width: 220px;"></span>
+                        <span id="preview_filesize" class="fw-mono"></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary-med w-100 py-3 fw-bold fs-6 d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-cpu fs-5"></i>
+                    <span>Submit Scan & Detect Cancer</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const pills = document.querySelectorAll('.upload-cat-btn');
+    const selectElem = document.getElementById('cancer_type_select');
+
+    if (pills.length > 0 && selectElem) {
+        // Sync pills when select changes
+        selectElem.addEventListener('change', function() {
+            const currentVal = this.value;
+            pills.forEach(p => {
+                if (p.getAttribute('data-val') === currentVal) {
+                    p.classList.remove('btn-light', 'border');
+                    p.classList.add('btn-primary-med', 'active');
+                } else {
+                    p.classList.remove('btn-primary-med', 'active');
+                    p.classList.add('btn-light', 'border');
+                }
+            });
+        });
+
+        // Sync select when pill is clicked
+        pills.forEach(pill => {
+            pill.addEventListener('click', function() {
+                const targetVal = this.getAttribute('data-val');
+                selectElem.value = targetVal;
+                
+                pills.forEach(p => {
+                    p.classList.remove('btn-primary-med', 'active');
+                    p.classList.add('btn-light', 'border');
+                });
+                this.classList.remove('btn-light', 'border');
+                this.classList.add('btn-primary-med', 'active');
+            });
+        });
+    }
+});
+</script>
+{% endblock %}

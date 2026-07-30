@@ -1,0 +1,46 @@
+/* Upload Module & Dropzone Styling */
+
+.upload-dropzone {
+  border: 2px dashed #90CAF9;
+  border-radius: var(--border-radius-md);
+  background-color: #F4F8FB;
+  padding: 3rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.upload-dropzone:hover, .upload-dropzone.dragover {
+  border-color: var(--primary-color);
+  background-color: var(--primary-light);
+}
+
+.upload-icon-wrapper {
+  width: 72px;
+  height: 72px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  color: var(--primary-color);
+  font-size: 2.25rem;
+}
+
+.image-preview-container {
+  max-width: 360px;
+  margin: 1.5rem auto 0 auto;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.image-preview-img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  display: block;
+}

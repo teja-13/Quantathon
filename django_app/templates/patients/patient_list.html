@@ -1,0 +1,104 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Patient Directory - OncoVision AI{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-1"><i class="bi bi-people text-primary me-2"></i> Patient Directory</h3>
+        <p class="text-muted small mb-0">Search, filter, and manage registered patient medical records</p>
+    </div>
+    <a href="{% url 'patients:add' %}" class="btn btn-primary-med d-inline-flex align-items-center gap-2">
+        <i class="bi bi-person-plus-fill"></i> Add New Patient
+    </a>
+</div>
+
+<!-- Search & Filter Bar -->
+<div class="card med-card p-3 mb-4">
+    <form method="GET" class="row g-2 align-items-center">
+        <div class="col-12 col-md-5">
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" name="q" class="form-control border-start-0 ps-0" placeholder="Search by name, email, phone, doctor..." value="{{ search_query }}">
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <select name="gender" class="form-select">
+                <option value="">-- All Genders --</option>
+                {% for code, label in gender_choices %}
+                    <option value="{{ code }}" {% if selected_gender == code %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-6 col-md-2">
+            <select name="blood_group" class="form-select">
+                <option value="">-- Blood Group --</option>
+                {% for code, label in blood_group_choices %}
+                    <option value="{{ code }}" {% if selected_blood_group == code %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-12 col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-primary-med w-100">Filter</button>
+            <a href="{% url 'patients:list' %}" class="btn btn-light border" title="Reset Filters"><i class="bi bi-arrow-counterclockwise"></i></a>
+        </div>
+    </form>
+</div>
+
+<!-- Patient Directory Table -->
+<div class="card med-card shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>MRN / ID</th>
+                    <th>Patient Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Blood Group</th>
+                    <th>Phone</th>
+                    <th>Attending Doctor</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for patient in patients %}
+                    <tr>
+                        <td class="fw-mono text-muted">#PT-{{ patient.id|stringformat:"04d" }}</td>
+                        <td>
+                            <a href="{% url 'patients:detail' patient.pk %}" class="fw-bold text-decoration-none text-dark d-block">
+                                {{ patient.full_name }}
+                            </a>
+                            <span class="text-muted small">{{ patient.email|default:"No email" }}</span>
+                        </td>
+                        <td>{{ patient.age }} yrs</td>
+                        <td>{{ patient.gender }}</td>
+                        <td><span class="badge bg-light text-primary border fw-semibold">{{ patient.blood_group }}</span></td>
+                        <td><span class="small text-muted"><i class="bi bi-telephone me-1"></i>{{ patient.phone }}</span></td>
+                        <td class="small">{{ patient.doctor_name }}</td>
+                        <td class="text-end">
+                            <div class="btn-group btn-group-sm">
+                                <a href="{% url 'patients:detail' patient.pk %}" class="btn btn-light border" title="View Patient Profile"><i class="bi bi-eye text-primary"></i></a>
+                                <a href="{% url 'diagnosis:upload' %}?patient={{ patient.pk }}" class="btn btn-light border" title="Run Cancer Scan"><i class="bi bi-cpu text-secondary"></i></a>
+                                <a href="{% url 'patients:edit' patient.pk %}" class="btn btn-light border" title="Edit Patient Record"><i class="bi bi-pencil text-warning"></i></a>
+                                <a href="{% url 'patients:delete' patient.pk %}" class="btn btn-light border" title="Delete Patient Record"><i class="bi bi-trash text-danger"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-5">
+                            <div class="text-muted mb-2"><i class="bi bi-people display-4"></i></div>
+                            <h6 class="fw-semibold">No Patients Found</h6>
+                            <p class="text-muted small mb-3">No patient records match the specified search parameters.</p>
+                            <a href="{% url 'patients:add' %}" class="btn btn-primary-med btn-sm">Add First Patient</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% include 'base/pagination.html' %}
+{% endblock %}
