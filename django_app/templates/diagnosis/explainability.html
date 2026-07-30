@@ -1,0 +1,144 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Grad-CAM Model Explainability - OncoVision AI{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <span class="badge bg-light text-primary border mb-1 px-3 py-1 rounded-5"><i class="bi bi-cpu me-1"></i> Explainable AI (XAI)</span>
+        <h3 class="fw-bold text-dark mb-0">Grad-CAM & Feature Heatmap Explainability</h3>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'diagnosis:result' diagnosis.pk %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Back to Prediction
+        </a>
+        <a href="{% url 'reports:generate' diagnosis.pk %}" class="btn btn-primary-med">
+            <i class="bi bi-file-earmark-pdf me-1"></i> Generate Report
+        </a>
+    </div>
+</div>
+
+<!-- Image & Grad-CAM Visual Comparison Row -->
+<div class="row g-4 mb-4">
+    <!-- Original Medical Image -->
+    <div class="col-12 col-md-4">
+        <div class="card med-card p-3 h-100 text-center">
+            <h6 class="fw-bold mb-3 text-muted text-uppercase font-monospace">1. Uploaded Medical Scan</h6>
+            {% if diagnosis.medical_image %}
+                <img src="{{ diagnosis.medical_image.url }}" alt="Original Scan" class="img-fluid rounded border shadow-sm object-fit-cover mb-2" style="max-height: 240px; width: 100%;">
+            {% else %}
+                <img src="{% static 'images/brain-cancer.svg' %}" alt="Original Scan" class="img-fluid rounded border shadow-sm object-fit-cover mb-2" style="max-height: 240px; width: 100%;">
+            {% endif %}
+            <span class="small text-muted">Input Scan (Raw Array Tensor)</span>
+        </div>
+    </div>
+
+    <!-- Grad-CAM Heatmap Activation -->
+    <div class="col-12 col-md-4">
+        <div class="card med-card p-3 h-100 text-center position-relative overflow-hidden">
+            <h6 class="fw-bold mb-3 text-primary text-uppercase font-monospace">2. Grad-CAM Activation Map</h6>
+            <div class="position-relative d-inline-block">
+                {% if diagnosis.medical_image %}
+                    <img src="{{ diagnosis.medical_image.url }}" alt="GradCAM Base" class="img-fluid rounded border shadow-sm object-fit-cover" style="max-height: 240px; width: 100%; filter: contrast(1.2);">
+                {% else %}
+                    <img src="{% static 'images/brain-cancer.svg' %}" alt="GradCAM Base" class="img-fluid rounded border shadow-sm object-fit-cover" style="max-height: 240px; width: 100%; filter: contrast(1.2);">
+                {% endif %}
+                <div class="position-absolute top-0 start-0 w-100 h-100 rounded" style="background: radial-gradient(circle at 55% 45%, rgba(255, 0, 0, 0.65) 0%, rgba(255, 165, 0, 0.45) 30%, rgba(0, 0, 255, 0.2) 65%, transparent 80%); pointer-events: none;"></div>
+            </div>
+            <span class="small text-primary fw-semibold mt-2 d-block">Highlighted High-Attention Region</span>
+        </div>
+    </div>
+
+    <!-- Combined Superimposed Feature Heatmap -->
+    <div class="col-12 col-md-4">
+        <div class="card med-card p-3 h-100 text-center">
+            <h6 class="fw-bold mb-3 text-secondary text-uppercase font-monospace">3. Superimposed Heatmap</h6>
+            <div class="position-relative d-inline-block">
+                {% if diagnosis.medical_image %}
+                    <img src="{{ diagnosis.medical_image.url }}" alt="Heatmap Overlay" class="img-fluid rounded border shadow-sm object-fit-cover" style="max-height: 240px; width: 100%;">
+                {% else %}
+                    <img src="{% static 'images/brain-cancer.svg' %}" alt="Heatmap Overlay" class="img-fluid rounded border shadow-sm object-fit-cover" style="max-height: 240px; width: 100%;">
+                {% endif %}
+                <div class="position-absolute top-0 start-0 w-100 h-100 rounded" style="background: linear-gradient(135deg, rgba(233, 30, 99, 0.3) 0%, rgba(38, 166, 154, 0.35) 100%); mix-blend-mode: overlay; pointer-events: none;"></div>
+            </div>
+            <span class="small text-secondary fw-semibold mt-2 d-block">Deep Feature Weight Layer Overlay</span>
+        </div>
+    </div>
+</div>
+
+<!-- Model Explanation Card & Feature Importance Table -->
+<div class="row g-4">
+    <!-- Model Explanation Card -->
+    <div class="col-12 col-lg-5">
+        <div class="card med-card p-4 h-100">
+            <h5 class="fw-bold mb-3 border-bottom pb-2"><i class="bi bi-info-circle text-primary me-2"></i> Model Explanation Card</h5>
+            <div class="bg-light p-3 rounded-3 border mb-3">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted small">Architecture</span>
+                    <span class="fw-semibold">ResNet-50 / DenseNet-121 Ensemble</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted small">Target Modality</span>
+                    <span class="fw-semibold">{{ diagnosis.cancer_type }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted small">Grad-CAM Method</span>
+                    <span class="fw-semibold">Guided Backpropagation</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span class="text-muted small">Layer Inspected</span>
+                    <span class="fw-mono text-primary">conv5_block3_out</span>
+                </div>
+            </div>
+
+            <p class="small text-muted mb-0" style="line-height: 1.6;">
+                {{ model_explanation }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Feature Importance Table -->
+    <div class="col-12 col-lg-7">
+        <div class="card med-card p-4 h-100">
+            <h5 class="fw-bold mb-3 border-bottom pb-2"><i class="bi bi-bar-chart-steps text-secondary me-2"></i> Feature Importance Breakdown</h5>
+            
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Diagnostic Feature Name</th>
+                            <th>Model Attention Weight</th>
+                            <th>Risk Assessment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in feature_importance %}
+                            <tr>
+                                <td class="fw-semibold text-dark">{{ item.feature }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="progress flex-grow-1" style="height: 8px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{ item.weight }};"></div>
+                                        </div>
+                                        <span class="fw-mono small font-weight-bold">{{ item.weight }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if item.status == 'High Risk' %}
+                                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle"><i class="bi bi-exclamation-circle me-1"></i> High Risk</span>
+                                    {% elif item.status == 'Moderate Risk' %}
+                                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle"><i class="bi bi-dash-circle me-1"></i> Moderate Risk</span>
+                                    {% else %}
+                                        <span class="badge bg-success bg-opacity-10 text-success border border-success-subtle"><i class="bi bi-check-circle me-1"></i> Low Risk</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

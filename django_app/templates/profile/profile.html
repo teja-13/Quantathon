@@ -1,0 +1,93 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Physician Profile - OncoVision AI{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+    <!-- Left Column: User Summary Card -->
+    <div class="col-12 col-lg-4">
+        <div class="card med-card text-center p-4">
+            <div class="position-relative d-inline-block mx-auto mb-3">
+                {% if profile.avatar %}
+                    <img src="{{ profile.avatar.url }}" alt="Profile Avatar" class="rounded-circle border border-3 border-primary shadow-sm object-fit-cover" style="width: 120px; height: 120px;">
+                {% else %}
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center border border-3 border-white shadow-sm mx-auto" style="width: 120px; height: 120px; font-size: 3rem; font-weight: 700;">
+                        {{ user.first_name|default:user.username|slice:":1"|upper }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <h4 class="fw-bold mb-1">Dr. {{ user.get_full_name|default:user.username }}</h4>
+            <p class="badge bg-light text-primary border mb-2">{{ profile.title|default:"Senior Oncologist" }}</p>
+            <p class="text-muted small mb-3"><i class="bi bi-hospital me-1"></i> {{ profile.department|default:"Diagnostic Radiology" }}</p>
+
+            <hr class="my-3">
+
+            <div class="text-start small text-muted space-y-2">
+                <div class="mb-2"><i class="bi bi-envelope text-primary me-2"></i> {{ user.email|default:"Not provided" }}</div>
+                <div class="mb-2"><i class="bi bi-telephone text-primary me-2"></i> {{ profile.phone|default:"Not provided" }}</div>
+                <div class="mb-2"><i class="bi bi-calendar-check text-primary me-2"></i> Registered: {{ user.date_joined|date:"M d, Y" }}</div>
+            </div>
+
+            <div class="mt-4 pt-2">
+                <a href="{% url 'accounts:change_password' %}" class="btn btn-outline-primary w-100 btn-sm fw-medium">
+                    <i class="bi bi-shield-lock me-1"></i> Change Password
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Edit Profile Form -->
+    <div class="col-12 col-lg-8">
+        <div class="card med-card p-4">
+            <h5 class="fw-bold mb-3 border-bottom pb-2"><i class="bi bi-person-lines-fill text-primary me-2"></i> Edit Physician Information</h5>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">First Name</label>
+                        <input type="text" name="first_name" class="form-control" value="{{ form.first_name.value|default:user.first_name }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" name="last_name" class="form-control" value="{{ form.last_name.value|default:user.last_name }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" name="email" class="form-control" value="{{ form.email.value|default:user.email }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Phone Number</label>
+                        {{ form.phone }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Medical Title / Designation</label>
+                        {{ form.title }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Department / Unit</label>
+                        {{ form.department }}
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Clinical Bio & Profile Summary</label>
+                        {{ form.bio }}
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Profile Avatar Image</label>
+                        {{ form.avatar }}
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4 pt-2 border-top">
+                    <button type="submit" class="btn btn-primary-med px-4">
+                        <i class="bi bi-check2-circle me-1"></i> Save Profile Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

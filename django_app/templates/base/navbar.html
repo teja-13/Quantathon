@@ -1,0 +1,55 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg bg-white border-bottom px-4 py-2 sticky-top shadow-sm">
+    <div class="container-fluid p-0">
+        <!-- Mobile Sidebar Toggle -->
+        <button class="btn btn-light d-lg-none me-3" type="button" id="sidebar_toggle_btn">
+            <i class="bi bi-list fs-4"></i>
+        </button>
+
+        <!-- Quick Patient Search Input -->
+        <form class="d-none d-md-flex align-items-center me-auto" action="{% url 'patients:list' %}" method="GET" style="max-width: 320px;">
+            <div class="input-group input-group-sm">
+                <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                <input type="text" name="q" class="form-control bg-light border-start-0 ps-0" placeholder="Search patients or MRN..." aria-label="Search">
+            </div>
+        </form>
+
+        <!-- Right Header Items -->
+        <div class="d-flex align-items-center gap-3 ms-auto">
+            <!-- New Diagnostic Scan Action -->
+            <a href="{% url 'diagnosis:select' %}" class="btn btn-primary-med btn-sm d-flex align-items-center gap-2">
+                <i class="bi bi-plus-circle"></i>
+                <span class="d-none d-sm-inline">New AI Scan</span>
+            </a>
+
+            <!-- User Dropdown Menu -->
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark" data-bs-toggle="dropdown" aria-expanded="false">
+                    {% if user.profile.avatar %}
+                        <img src="{{ user.profile.avatar.url }}" alt="Avatar" width="36" height="36" class="rounded-circle me-2 border">
+                    {% else %}
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2 border" style="width:36px; height:36px; font-weight:600;">
+                            {{ user.first_name|default:user.username|slice:":1"|upper }}
+                        </div>
+                    {% endif %}
+                    <div class="d-none d-md-block text-start me-1">
+                        <div class="fw-semibold text-truncate" style="max-width: 140px;">Dr. {{ user.get_full_name|default:user.username }}</div>
+                        <div class="text-muted small" style="font-size: 0.75rem;">{{ user.profile.title|default:"Oncologist" }}</div>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+                    <li><a class="dropdown-menu-item dropdown-item d-flex align-items-center gap-2" href="{% url 'accounts:profile' %}"><i class="bi bi-person text-primary"></i> My Profile</a></li>
+                    <li><a class="dropdown-menu-item dropdown-item d-flex align-items-center gap-2" href="{% url 'system_settings:settings' %}"><i class="bi bi-gear text-secondary"></i> System Settings</a></li>
+                    <li><a class="dropdown-menu-item dropdown-item d-flex align-items-center gap-2" href="{% url 'accounts:change_password' %}"><i class="bi bi-key text-warning"></i> Change Password</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form action="{% url 'accounts:logout' %}" method="POST" class="m-0">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2 w-100"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

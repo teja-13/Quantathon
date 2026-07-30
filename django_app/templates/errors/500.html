@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+
+{% block title %}500 Internal Server Error - OncoVision AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center py-5">
+    <div class="col-12 col-md-8 col-lg-6 text-center">
+        <div class="card med-card p-5 border-0 shadow-lg">
+            <div class="display-1 text-danger fw-bold mb-2">500</div>
+            <h3 class="fw-bold text-dark mb-2">Internal Server Error</h3>
+            <p class="text-muted mb-4">An unexpected error occurred while processing the diagnostic request. Our engineering team has been notified.</p>
+            <div>
+                <a href="{% url 'dashboard:index' %}" class="btn btn-primary-med px-4 py-2 fw-semibold">
+                    <i class="bi bi-house-door me-2"></i> Return to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

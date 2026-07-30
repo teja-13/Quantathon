@@ -1,0 +1,247 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Diagnostic Dashboard - OncoVision AI{% endblock %}
+
+{% block content %}
+<!-- Welcome Banner -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 rounded-4 text-white shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #1565C0 0%, #0D47A1 60%, #26A69A 100%);">
+            <div class="card-body p-4 p-md-5 position-relative">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <span class="badge bg-white text-primary mb-2 fw-semibold px-3 py-1.5 rounded-5"><i class="bi bi-cpu me-1"></i> AI Diagnostics v5.2 Active</span>
+                        <h2 class="fw-bold mb-2">Welcome back, Dr. {{ user.get_full_name|default:user.username }}!</h2>
+                        <p class="opacity-90 mb-4" style="max-width: 600px;">
+                            Overview of clinical diagnostic activities, patient scans, AI detection metrics, and generated medical reports.
+                        </p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{% url 'diagnosis:select' %}" class="btn btn-light text-primary fw-semibold px-4 py-2 rounded-3">
+                                <i class="bi bi-plus-circle me-1"></i> Run AI Diagnosis
+                            </a>
+                            <a href="{% url 'patients:add' %}" class="btn btn-outline-light fw-medium px-4 py-2 rounded-3">
+                                <i class="bi bi-person-plus me-1"></i> Add Patient
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Key Performance Indicators (KPI Stats Cards) -->
+<div class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon primary">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-value">{{ total_patients }}</div>
+                <div class="stat-label">Total Patients</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon warning">
+                <i class="bi bi-activity"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-value">{{ total_diagnoses }}</div>
+                <div class="stat-label">Total Diagnoses</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon success">
+                <i class="bi bi-file-earmark-check-fill"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-value">{{ total_reports }}</div>
+                <div class="stat-label">Total Reports</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon secondary">
+                <i class="bi bi-award-fill"></i>
+            </div>
+            <div class="stat-info">
+                <div class="stat-value">{{ reports_generated }}</div>
+                <div class="stat-label">Reports Generated</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions Row -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="med-card p-3">
+            <div class="fw-semibold text-muted small mb-3 text-uppercase font-monospace px-2">Quick Actions</div>
+            <div class="row g-3">
+                <div class="col-6 col-md-3">
+                    <a href="{% url 'patients:add' %}" class="quick-action-btn">
+                        <i class="bi bi-person-plus text-primary"></i>
+                        <span>Add New Patient</span>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a href="{% url 'diagnosis:select' %}" class="quick-action-btn">
+                        <i class="bi bi-cpu text-secondary"></i>
+                        <span>Start Cancer Detection</span>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a href="{% url 'reports:history' %}" class="quick-action-btn">
+                        <i class="bi bi-journal-text text-warning"></i>
+                        <span>View Report History</span>
+                    </a>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a href="{% url 'system_settings:settings' %}" class="quick-action-btn">
+                        <i class="bi bi-sliders text-info"></i>
+                        <span>System Settings</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row g-4 mb-4">
+    <div class="col-12 col-lg-5">
+        <div class="card med-card h-100">
+            <div class="med-card-header">
+                <h5 class="med-card-title"><i class="bi bi-pie-chart text-primary me-2"></i> Cancer Types Distribution</h5>
+            </div>
+            <div class="med-card-body d-flex align-items-center justify-content-center" style="min-height: 280px;">
+                <canvas id="cancerDistributionChart" style="max-height: 260px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-7">
+        <div class="card med-card h-100">
+            <div class="med-card-header">
+                <h5 class="med-card-title"><i class="bi bi-bar-chart-line text-secondary me-2"></i> Monthly Scan Volume</h5>
+            </div>
+            <div class="med-card-body d-flex align-items-center justify-content-center" style="min-height: 280px;">
+                <canvas id="monthlyScansChart" style="max-height: 260px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Records Lists (Recent Patients, Recent Diagnoses, Recent Reports) -->
+<div class="row g-4">
+    <!-- Recent Patients Table -->
+    <div class="col-12 col-lg-6">
+        <div class="card med-card h-100">
+            <div class="med-card-header">
+                <h5 class="med-card-title"><i class="bi bi-people text-primary me-2"></i> Recent Patients</h5>
+                <a href="{% url 'patients:list' %}" class="btn btn-sm btn-link text-decoration-none">View All</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Age / Sex</th>
+                            <th>Blood Group</th>
+                            <th>Doctor</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in recent_patients %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'patients:detail' patient.pk %}" class="fw-semibold text-decoration-none text-dark">
+                                        {{ patient.full_name }}
+                                    </a>
+                                </td>
+                                <td>{{ patient.age }} yrs / {{ patient.gender }}</td>
+                                <td><span class="badge bg-light text-dark border">{{ patient.blood_group }}</span></td>
+                                <td class="small text-muted">{{ patient.doctor_name }}</td>
+                                <td class="text-end">
+                                    <a href="{% url 'patients:detail' patient.pk %}" class="btn btn-sm btn-light"><i class="bi bi-eye"></i></a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">No patient records available.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Diagnoses List -->
+    <div class="col-12 col-lg-6">
+        <div class="card med-card h-100">
+            <div class="med-card-header">
+                <h5 class="med-card-title"><i class="bi bi-activity text-danger me-2"></i> Recent AI Diagnoses</h5>
+                <a href="{% url 'diagnosis:select' %}" class="btn btn-sm btn-link text-decoration-none">New Scan</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Patient</th>
+                            <th>Cancer Type</th>
+                            <th>Prediction</th>
+                            <th>Confidence</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for diag in recent_diagnoses %}
+                            <tr>
+                                <td class="fw-semibold">{{ diag.patient.full_name }}</td>
+                                <td><span class="badge bg-light text-primary border">{{ diag.cancer_type }}</span></td>
+                                <td>
+                                    {% if diag.prediction == 'Cancerous' %}
+                                        <span class="badge-cancerous"><i class="bi bi-exclamation-triangle-fill me-1"></i> Cancerous</span>
+                                    {% else %}
+                                        <span class="badge-non-cancerous"><i class="bi bi-check-circle-fill me-1"></i> Non-Cancerous</span>
+                                    {% endif %}
+                                </td>
+                                <td><span class="fw-bold">{{ diag.confidence }}%</span></td>
+                                <td class="text-end">
+                                    <a href="{% url 'diagnosis:result' diag.pk %}" class="btn btn-sm btn-light"><i class="bi bi-arrow-right-short fs-5"></i></a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">No recent diagnoses performed.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cancerLabels = {{ cancer_types_json|safe }};
+        const cancerCounts = {{ cancer_counts_json|safe }};
+        initDashboardCharts(cancerLabels, cancerCounts);
+    });
+</script>
+{% endblock %}

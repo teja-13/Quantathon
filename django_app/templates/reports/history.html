@@ -1,0 +1,24 @@
+{% extends "base/base.html" %}
+{% block title %}Report History | MedDetect{% endblock %}
+{% block page_title %}Report History{% endblock %}
+{% block content %}
+<div class="card p-3 p-md-4 mb-4">
+  <div class="row g-3">
+    <div class="col-md-5"><input class="form-control form-control-lg" placeholder="Search reports"></div>
+    <div class="col-md-3"><select class="form-select form-select-lg"><option>All Cancer Types</option><option>Breast</option><option>Brain</option><option>Lung</option><option>Liver</option><option>Colon</option></select></div>
+    <div class="col-md-2"><input type="date" class="form-control form-control-lg"></div>
+    <div class="col-md-2"><button class="btn btn-primary w-100 btn-lg">Filter</button></div>
+  </div>
+</div>
+
+<div class="card p-3 p-md-4">
+  <div class="table-responsive">
+    <table class="table table-modern align-middle mb-0">
+      <thead>
+        <tr><th>Patient</th><th>Cancer Type</th><th>Prediction</th><th>Date</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="reportHistoryBody"></tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
