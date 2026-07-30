@@ -19,7 +19,7 @@ class UploadDiagnosisForm(forms.ModelForm):
             'medical_image': forms.FileInput(attrs={
                 'class': 'form-control form-control-lg',
                 'id': 'medical_image_input',
-                'accept': '.jpg,.jpeg,.png,image/jpeg,image/png'
+                'accept': '.jpg,.jpeg,.png,.nii,.nii.gz,image/jpeg,image/png,application/gzip,application/octet-stream'
             }),
         }
 
@@ -29,10 +29,10 @@ class UploadDiagnosisForm(forms.ModelForm):
             raise ValidationError("Please upload a medical diagnostic scan image.")
         
         # File extension validation
-        ext = os.path.splitext(image.name)[1].lower()
-        valid_extensions = ['.jpg', '.jpeg', '.png']
-        if ext not in valid_extensions:
-            raise ValidationError(f"Unsupported file format '{ext}'. Only .jpg, .jpeg, and .png files are accepted.")
+        filename = image.name.lower()
+        valid_extensions = ['.jpg', '.jpeg', '.png', '.nii', '.nii.gz']
+        if not any(filename.endswith(ext) for ext in valid_extensions):
+            raise ValidationError("Unsupported file format. Only .jpg, .jpeg, .png, .nii, and .nii.gz files are accepted.")
         
         # Max file size validation (5MB)
         max_size = 5 * 1024 * 1024  # 5MB in bytes

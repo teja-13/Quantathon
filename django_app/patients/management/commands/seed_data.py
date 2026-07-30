@@ -151,7 +151,6 @@ class Command(BaseCommand):
                 confidence=95.8 - (idx * 0.7),
                 probability=0.958 - (idx * 0.007),
                 processing_time=1.12 + (idx * 0.05),
-                estimated_stage='Stage II (Localized)' if idx % 2 == 0 else 'Stage I (Early)',
                 model_explanation=ai_client.CANCER_DESCRIPTIONS[ctype]['explanation'],
                 status='Completed'
             )

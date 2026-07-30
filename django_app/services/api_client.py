@@ -87,17 +87,33 @@ class FlaskAIClient:
         try:
             url = f"{FLASK_AI_URL}/api/predict"
             files = None
+
+            def guess_content_type(filename):
+                lower = (filename or '').lower()
+                if lower.endswith('.jpg') or lower.endswith('.jpeg'):
+                    return 'image/jpeg'
+                if lower.endswith('.png'):
+                    return 'image/png'
+                if lower.endswith('.nii.gz'):
+                    return 'application/gzip'
+                if lower.endswith('.nii'):
+                    return 'application/octet-stream'
+                return 'application/octet-stream'
+
             if hasattr(image_file, 'path') and os.path.exists(image_file.path):
+                filename = os.path.basename(getattr(image_file, 'name', image_file.path))
                 with open(image_file.path, 'rb') as f:
-                    files = {'image': (os.path.basename(image_file.name), f.read(), 'image/png')}
+                    files = {'image': (filename, f.read(), guess_content_type(filename))}
             elif hasattr(image_file, 'file'):
                 image_file.file.seek(0)
-                files = {'image': (getattr(image_file, 'name', 'scan.png'), image_file.file.read(), 'image/png')}
+                filename = getattr(image_file, 'name', 'scan.png')
+                files = {'image': (filename, image_file.file.read(), guess_content_type(filename))}
                 image_file.file.seek(0)
             elif hasattr(image_file, 'read'):
                 if hasattr(image_file, 'seek'):
                     image_file.seek(0)
-                files = {'image': (getattr(image_file, 'name', 'scan.png'), image_file.read(), 'image/png')}
+                filename = getattr(image_file, 'name', 'scan.png')
+                files = {'image': (filename, image_file.read(), guess_content_type(filename))}
 
             if files:
                 response = requests.post(url, files=files, data={'cancer_type': target_type}, timeout=4)
@@ -114,8 +130,6 @@ class FlaskAIClient:
         confidence = round(random.uniform(92.5, 98.9), 1)
         probability = round(confidence / 100.0, 4)
         processing_time = round(random.uniform(0.85, 1.35), 2)
-        stages = ['Stage I (Early Localized)', 'Stage II (Locally Advanced)', 'Stage III (Regional Node Involvement)']
-        stage = random.choice(stages)
         
         return {
             'status': 'success',
@@ -125,7 +139,6 @@ class FlaskAIClient:
             'confidence': confidence,
             'probability': probability,
             'processing_time': processing_time,
-            'estimated_stage': stage,
             'model_explanation': info['explanation'],
             'feature_importance': info['features'],
             'treatment_guidelines': info['guidelines'],

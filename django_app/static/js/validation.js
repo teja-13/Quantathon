@@ -9,11 +9,11 @@ function validateImageFile(file) {
     }
 
     const fileName = file.name.toLowerCase();
-    const validExtensions = ['.jpg', '.jpeg', '.png'];
+    const validExtensions = ['.jpg', '.jpeg', '.png', '.nii', '.nii.gz'];
     const hasValidExt = validExtensions.some(ext => fileName.endsWith(ext));
 
     if (!hasValidExt) {
-        showValidationError('Invalid file format. Only JPG, JPEG, and PNG images are allowed.');
+        showValidationError('Invalid file format. Only JPG, JPEG, PNG, and NIfTI (.nii/.nii.gz) files are allowed.');
         return false;
     }
 

@@ -1,0 +1,196 @@
+2026-07-30 14:40:17,292 | INFO | Brain Cancer prediction requested.
+2026-07-30 14:40:17,296 | INFO | Breast Cancer prediction requested.
+2026-07-30 14:40:17,300 | INFO | Lung Cancer prediction requested.
+2026-07-30 14:40:17,304 | INFO | Liver Cancer prediction requested.
+2026-07-30 14:40:17,308 | INFO | Kidney Cancer prediction requested.
+2026-07-30 14:40:17,312 | INFO | Brain Cancer prediction requested.
+2026-07-30 14:57:56,814 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/flask_ai/models/brain/final_pipeline.pkl
+2026-07-30 14:57:56,814 | ERROR | 
+Traceback (most recent call last):
+  File "/home/teja/teja/Quantathon/flask_ai/api/prediction.py", line 88, in predict
+    res = predictor.predict(image_file, cancer_type=cancer_type_raw)
+  File "/home/teja/teja/Quantathon/flask_ai/core/predictor.py", line 11, in predict
+    pipeline = model_loader.load(cancer_type)
+  File "/home/teja/teja/Quantathon/flask_ai/core/model_loader.py", line 76, in load
+    pipeline = joblib.load(pipeline_path)
+  File "/home/teja/teja/Quantathon/venv/lib/python3.14/site-packages/joblib/numpy_pickle.py", line 749, in load
+    obj = _unpickle(
+        fobj,
+    ...<2 lines>...
+        mmap_mode=validated_mmap_mode,
+    )
+  File "/home/teja/teja/Quantathon/venv/lib/python3.14/site-packages/joblib/numpy_pickle.py", line 626, in _unpickle
+    obj = unpickler.load()
+  File "/usr/lib/python3.14/pickle.py", line 1324, in load
+    raise EOFError
+EOFError
+2026-07-30 14:57:56,818 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/flask_ai/models/brain/final_pipeline.pkl
+2026-07-30 14:57:56,818 | ERROR | 
+Traceback (most recent call last):
+  File "/home/teja/teja/Quantathon/flask_ai/api/prediction.py", line 88, in predict
+    res = predictor.predict(image_file, cancer_type=cancer_type_raw)
+  File "/home/teja/teja/Quantathon/flask_ai/core/predictor.py", line 11, in predict
+    pipeline = model_loader.load(cancer_type)
+  File "/home/teja/teja/Quantathon/flask_ai/core/model_loader.py", line 76, in load
+    pipeline = joblib.load(pipeline_path)
+  File "/home/teja/teja/Quantathon/venv/lib/python3.14/site-packages/joblib/numpy_pickle.py", line 749, in load
+    obj = _unpickle(
+        fobj,
+    ...<2 lines>...
+        mmap_mode=validated_mmap_mode,
+    )
+  File "/home/teja/teja/Quantathon/venv/lib/python3.14/site-packages/joblib/numpy_pickle.py", line 626, in _unpickle
+    obj = unpickler.load()
+  File "/usr/lib/python3.14/pickle.py", line 1324, in load
+    raise EOFError
+EOFError
+2026-07-30 14:58:03,309 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/flask_ai/models/liver/final_pipeline.pkl
+2026-07-30 14:58:17,418 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 14:58:18,240 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 14:58:18,781 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 14:58:18,784 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 14:58:18,824 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 14:58:19,359 | INFO | Breast Cancer prediction requested via real ML pipeline.
+2026-07-30 14:58:19,362 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 14:58:19,404 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 14:58:19,917 | INFO | Lung Cancer prediction requested via real ML pipeline.
+2026-07-30 14:58:19,920 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 14:58:19,963 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 14:58:20,638 | INFO | Liver Cancer prediction requested via real ML pipeline.
+2026-07-30 14:58:20,640 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 14:58:20,690 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 14:58:21,282 | INFO | Kidney Cancer prediction requested via real ML pipeline.
+2026-07-30 14:58:21,346 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 14:58:37,856 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 14:58:38,702 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 14:58:39,218 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 14:58:39,221 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 14:58:39,262 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 14:58:39,759 | INFO | Breast Cancer prediction requested via real ML pipeline.
+2026-07-30 14:58:39,762 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 14:58:39,804 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 14:58:40,317 | INFO | Lung Cancer prediction requested via real ML pipeline.
+2026-07-30 14:58:40,319 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/flask_ai/models/liver/final_pipeline.pkl
+2026-07-30 14:58:40,364 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/flask_ai/models/liver/resnet50_feature_extractor
+2026-07-30 14:58:40,999 | INFO | Liver Cancer prediction requested via real ML pipeline.
+2026-07-30 14:58:41,002 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 14:58:41,048 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 14:58:41,631 | INFO | Kidney Cancer prediction requested via real ML pipeline.
+2026-07-30 14:58:41,698 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 15:02:59,849 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 15:03:00,658 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 15:03:01,185 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 15:03:01,187 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 15:03:01,229 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 15:03:01,745 | INFO | Breast Cancer prediction requested via real ML pipeline.
+2026-07-30 15:03:01,747 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 15:03:01,791 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 15:03:02,383 | INFO | Lung Cancer prediction requested via real ML pipeline.
+2026-07-30 15:03:02,386 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 15:03:02,431 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 15:03:03,170 | INFO | Liver Cancer prediction requested via real ML pipeline.
+2026-07-30 15:03:03,173 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 15:03:03,245 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 15:03:03,928 | INFO | Kidney Cancer prediction requested via real ML pipeline.
+2026-07-30 15:03:04,025 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 16:10:16,939 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:10:18,064 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:10:18,680 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 16:10:18,682 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:10:18,725 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:10:19,307 | INFO | Breast Cancer prediction requested via real ML pipeline.
+2026-07-30 16:10:19,310 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:10:19,371 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:10:20,092 | INFO | Lung Cancer prediction requested via real ML pipeline.
+2026-07-30 16:10:20,094 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:10:20,144 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:10:20,907 | INFO | Liver Cancer prediction requested via real ML pipeline.
+2026-07-30 16:10:20,910 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:10:20,960 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:10:21,617 | INFO | Kidney Cancer prediction requested via real ML pipeline.
+2026-07-30 16:10:21,715 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 16:26:53,243 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:26:54,063 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:26:54,607 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 16:26:54,610 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:26:54,653 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:26:55,168 | INFO | Breast Cancer prediction requested via real ML pipeline.
+2026-07-30 16:26:55,170 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:26:55,216 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:26:55,752 | INFO | Lung Cancer prediction requested via real ML pipeline.
+2026-07-30 16:26:55,754 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:26:55,799 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:26:56,545 | INFO | Liver Cancer prediction requested via real ML pipeline.
+2026-07-30 16:26:56,552 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:26:56,629 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:26:57,247 | INFO | Kidney Cancer prediction requested via real ML pipeline.
+2026-07-30 16:26:57,316 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 16:32:16,100 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:32:17,070 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:32:17,743 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 16:32:17,745 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:32:17,795 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:32:18,549 | INFO | Breast Cancer prediction requested via real ML pipeline.
+2026-07-30 16:32:18,553 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:32:18,618 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:32:19,312 | INFO | Lung Cancer prediction requested via real ML pipeline.
+2026-07-30 16:32:19,315 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:32:19,364 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:32:20,416 | INFO | Liver Cancer prediction requested via real ML pipeline.
+2026-07-30 16:32:20,420 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:32:20,513 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:32:21,327 | INFO | Kidney Cancer prediction requested via real ML pipeline.
+2026-07-30 16:32:21,445 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 16:48:23,596 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:48:24,796 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:48:25,551 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 16:48:25,553 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:48:25,613 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:48:26,194 | INFO | Breast Cancer prediction requested via real ML pipeline.
+2026-07-30 16:48:26,197 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:48:26,241 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:48:26,803 | INFO | Lung Cancer prediction requested via real ML pipeline.
+2026-07-30 16:48:26,805 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:48:26,847 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:48:27,398 | INFO | Liver Cancer prediction requested via real ML pipeline.
+2026-07-30 16:48:27,401 | INFO | Loading ML Pipeline dictionary from: /home/teja/teja/Quantathon/trained_models/liver/final_pipeline.pkl
+2026-07-30 16:48:27,447 | INFO | Loading ResNet50 Feature Extractor from: /home/teja/teja/Quantathon/trained_models/liver/resnet50_feature_extractor
+2026-07-30 16:48:28,054 | INFO | Kidney Cancer prediction requested via real ML pipeline.
+2026-07-30 16:48:28,149 | INFO | Brain Cancer prediction requested via real ML pipeline.
+2026-07-30 16:48:28,161 | ERROR | [Errno 2] No such file or directory: '/home/teja/.vscode/tmp/tmp_vscode_1/tmp245v0ibp.nii.gz'
+Traceback (most recent call last):
+  File "/home/teja/teja/Quantathon/flask_ai/api/prediction.py", line 88, in predict
+    res = predictor.predict(image_file, cancer_type=cancer_type_raw)
+  File "/home/teja/teja/Quantathon/flask_ai/core/predictor.py", line 14, in predict
+    raw_features = feature_extractor.extract(image, cancer_type)
+  File "/home/teja/teja/Quantathon/flask_ai/core/feature_extraction.py", line 109, in extract
+    pil_img = self._load_image(image_input)
+  File "/home/teja/teja/Quantathon/flask_ai/core/feature_extraction.py", line 99, in _load_image
+    return self._load_nifti_image(image_input)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/teja/teja/Quantathon/flask_ai/core/feature_extraction.py", line 66, in _load_nifti_image
+    volume = nifti.get_fdata(dtype=np.float32)
+  File "/home/teja/teja/Quantathon/venv/lib/python3.14/site-packages/nibabel/dataobj_images.py", line 373, in get_fdata
+    data = np.asanyarray(self._dataobj, dtype=dtype)
+  File "/home/teja/teja/Quantathon/venv/lib/python3.14/site-packages/nibabel/arrayproxy.py", line 455, in __array__
+    arr = self._get_scaled(dtype=dtype, slicer=())
+  File "/home/teja/teja/Quantathon/venv/lib/python3.14/site-packages/nibabel/arrayproxy.py", line 422, in _get_scaled
+    scaled = apply_read_scaling(self._get_unscaled(slicer=slicer), scl_slope, scl_inter)
+                                ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/teja/teja/Quantathon/venv/lib/python3.14/site-packages/nibabel/arrayproxy.py", line 391, in _get_unscaled
+    with self._get_fileobj() as fileobj, self._lock:
+         ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "/home/teja/teja/Quantathon/venv/lib/python3.14/site-packages/nibabel/arrayproxy.py", line 384, in _get_fileobj
+    with openers.ImageOpener(self.file_like, keep_open=False) as opener:
+         ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/teja/teja/Quantathon/venv/lib/python3.14/site-packages/nibabel/openers.py", line 110, in __init__
+    self.fobj = opener(fileish, *args, **kwargs)
+                ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/teja/teja/Quantathon/venv/lib/python3.14/site-packages/nibabel/_compression.py", line 143, in gzip_open
+    gzip_file = DeterministicGzipFile(filename, mode, compresslevel, mtime=mtime)
+  File "/home/teja/teja/Quantathon/venv/lib/python3.14/site-packages/nibabel/_compression.py", line 101, in __init__
+    fileobj = self.myfileobj = ty.cast('io.FileIO', open(filename, modestr))
+                                                    ~~~~^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/teja/.vscode/tmp/tmp_vscode_1/tmp245v0ibp.nii.gz'

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Medical Report #{{ report.report_number }} - OncoVision AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .report-paper {
+            max-width: 850px;
+            margin: 20px auto;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+        .header-brand {
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .badge-positive {
+            background-color: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+        .badge-negative {
+            background-color: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+        @media print {
+            body { background: white; }
+            .report-paper { box-shadow: none; border: none; padding: 0; margin: 0; max-width: 100%; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print text-center my-3">
+    <button onclick="window.print()" class="btn btn-primary btn-lg shadow"><i class="bi bi-printer me-2"></i> Print / Save as PDF</button>
+    <a href="{% url 'reports:detail' report.pk %}" class="btn btn-outline-secondary btn-lg ms-2"><i class="bi bi-arrow-left me-1"></i> Back to Report</a>
+</div>
+
+<div class="report-paper">
+    <!-- Header -->
+    <div class="header-brand d-flex justify-content-between align-items-center">
+        <div>
+            <h2 class="fw-bold text-primary mb-0"><i class="bi bi-shield-plus me-2"></i>OncoVision AI</h2>
+            <small class="text-muted text-uppercase tracking-wider fw-semibold">Diagnostic Oncology & Radiology Services</small>
+        </div>
+        <div class="text-end">
+            <span class="badge bg-primary fs-6 mb-1">OFFICIAL REPORT</span>
+            <div class="fw-bold text-dark">#{{ report.report_number }}</div>
+            <small class="text-muted">{{ report.created_at|date:"F d, Y - H:i" }} UTC</small>
+        </div>
+    </div>
+
+    <!-- Patient & Diagnostic Info Grid -->
+    <div class="row g-3 mb-4">
+        <div class="col-6">
+            <div class="p-3 bg-light rounded-3 border">
+                <h6 class="text-uppercase text-muted font-monospace small fw-bold mb-2">Patient Profile</h6>
+                <div class="fw-bold text-dark fs-5">{{ report.diagnosis.patient.full_name }}</div>
+                <div class="small text-muted">MRN ID: #PAT-2026-{{ report.diagnosis.patient.pk }}</div>
+                <div class="small text-muted">Age / Gender: {{ report.diagnosis.patient.age }} Yrs / {{ report.diagnosis.patient.gender }}</div>
+                <div class="small text-muted">Primary Physician: Dr. {{ report.diagnosis.patient.doctor_name }}</div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="p-3 bg-light rounded-3 border">
+                <h6 class="text-uppercase text-muted font-monospace small fw-bold mb-2">Scan & Modality Specification</h6>
+                <div class="fw-bold text-dark fs-5">{{ report.diagnosis.cancer_type }}</div>
+                <div class="small text-muted">Target Organ / Region: {{ report.diagnosis.cancer_type }}</div>
+                <div class="small text-muted">Scan Processing Time: {{ report.diagnosis.processing_time }} seconds</div>
+                <div class="small text-muted">AI Inference Engine: PyTorch ResNet50 + QUBO ML</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Machine Learning Model Diagnostic Finding -->
+    <div class="p-4 rounded-3 border mb-4 {% if report.diagnosis.prediction == 'Cancerous' %}bg-danger bg-opacity-10 border-danger-subtle{% else %}bg-success bg-opacity-10 border-success-subtle{% endif %}">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="fw-bold mb-0 {% if report.diagnosis.prediction == 'Cancerous' %}text-danger{% else %}text-success{% endif %}">
+                <i class="bi {% if report.diagnosis.prediction == 'Cancerous' %}bi-exclamation-triangle-fill{% else %}bi-check-circle-fill{% endif %} me-2"></i>
+                AI Model Prediction: {{ report.diagnosis.prediction }} Pattern
+            </h5>
+            {% if report.diagnosis.prediction == 'Cancerous' %}
+                <span class="badge-positive">Malignancy Detected</span>
+            {% else %}
+                <span class="badge-negative">Benign / Non-Cancerous</span>
+            {% endif %}
+        </div>
+        <div class="row text-center mt-3 pt-3 border-top border-secondary border-opacity-10">
+            <div class="col-6 border-end">
+                <div class="small text-muted text-uppercase font-monospace">Model Confidence Score</div>
+                <div class="fs-3 fw-bold text-dark">{{ report.diagnosis.confidence }}%</div>
+            </div>
+            <div class="col-6">
+                <div class="small text-muted text-uppercase font-monospace">Malignancy Probability</div>
+                <div class="fs-3 fw-bold text-dark">{{ report.diagnosis.probability }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Neural Findings & Explanation -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase font-monospace border-bottom pb-2 mb-3 text-secondary"><i class="bi bi-cpu me-1"></i> Automated Model Neural Findings</h6>
+        <div class="p-3 bg-light border rounded-3 small text-secondary" style="line-height: 1.7;">
+            {{ report.diagnosis.model_explanation }}
+        </div>
+    </div>
+
+    <!-- Feature Importance Table -->
+    {% if feature_importance %}
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase font-monospace border-bottom pb-2 mb-3 text-secondary"><i class="bi bi-bar-chart-steps me-1"></i> Extracted Feature Importance Breakdown</h6>
+        <table class="table table-sm table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Extracted Biomarker / Image Feature</th>
+                    <th style="width: 120px;">Model Weight</th>
+                    <th style="width: 140px;">Clinical Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for feat in feature_importance %}
+                <tr>
+                    <td class="fw-semibold text-dark">{{ feat.feature }}</td>
+                    <td class="fw-bold text-primary">{{ feat.weight }}</td>
+                    <td>
+                        {% if feat.status == 'High Risk' %}
+                            <span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle">{{ feat.status }}</span>
+                        {% elif feat.status == 'Moderate Risk' %}
+                            <span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle">{{ feat.status }}</span>
+                        {% else %}
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success-subtle">{{ feat.status }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- Clinical Guidelines & Protocol -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase font-monospace border-bottom pb-2 mb-3 text-secondary"><i class="bi bi-clipboard-pulse me-1"></i> Recommended Treatment Guidelines & Clinical Protocol</h6>
+        <div class="p-3 bg-white border border-primary border-opacity-25 rounded-3 text-dark small" style="line-height: 1.7;">
+            {{ report.treatment_guidelines }}
+        </div>
+    </div>
+
+    <!-- Doctor Notes -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase font-monospace border-bottom pb-2 mb-3 text-secondary"><i class="bi bi-pencil-square me-1"></i> Attending Oncologist Notes & Remarks</h6>
+        <div class="p-3 bg-light border rounded-3 text-dark small" style="min-height: 80px; line-height: 1.6;">
+            {{ report.doctor_notes|default:"No additional notes appended by attending oncologist." }}
+        </div>
+    </div>
+
+    <!-- Signatures & Verification -->
+    <div class="row mt-5 pt-4 border-top">
+        <div class="col-6">
+            <div class="small text-muted">Generated by: Automated AI Diagnostics Pipeline</div>
+            <div class="small text-muted">Report Status: Final Verified Record</div>
+        </div>
+        <div class="col-6 text-end">
+            <div class="fw-bold text-dark">Dr. {{ report.diagnosis.patient.doctor_name }}</div>
+            <div class="small text-muted">Senior Oncologist & Radiology Specialist</div>
+            <div class="mt-2 text-muted small">_______________________________<br>Authorized Electronic Signature</div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

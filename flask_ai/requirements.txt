@@ -3,6 +3,7 @@ Flask-Cors
 python-dotenv
 
 numpy
+nibabel
 opencv-python-headless
 Pillow
 
@@ -13,3 +14,5 @@ matplotlib
 
 pytest
 gunicorn
+torch
+torchvision
