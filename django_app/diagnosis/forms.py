@@ -34,9 +34,9 @@ class UploadDiagnosisForm(forms.ModelForm):
         if not any(filename.endswith(ext) for ext in valid_extensions):
             raise ValidationError("Unsupported file format. Only .jpg, .jpeg, .png, .nii, and .nii.gz files are accepted.")
         
-        # Max file size validation (5MB)
-        max_size = 5 * 1024 * 1024  # 5MB in bytes
+        # Max file size validation (100MB)
+        max_size = 100 * 1024 * 1024  # 100MB in bytes
         if image.size > max_size:
-            raise ValidationError(f"File size ({round(image.size / (1024 * 1024), 2)}MB) exceeds maximum limit of 5MB.")
+            raise ValidationError(f"File size ({round(image.size / (1024 * 1024), 2)}MB) exceeds maximum limit of 100MB.")
             
         return image

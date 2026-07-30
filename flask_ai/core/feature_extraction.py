@@ -41,6 +41,7 @@ class FeatureExtractor:
 
     def _load_nifti_image(self, image_input):
         filename = getattr(image_input, "filename", None) or getattr(image_input, "name", "scan.nii")
+        temp_path = None
 
         if hasattr(image_input, "path") and os.path.exists(image_input.path):
             nifti = nib.load(image_input.path)
@@ -57,13 +58,13 @@ class FeatureExtractor:
             finally:
                 temp_file.close()
 
-            try:
-                nifti = nib.load(temp_path)
-            finally:
-                if os.path.exists(temp_path):
-                    os.unlink(temp_path)
+            nifti = nib.load(temp_path)
 
-        volume = nifti.get_fdata(dtype=np.float32)
+        try:
+            volume = nifti.get_fdata(dtype=np.float32)
+        finally:
+            if temp_path and os.path.exists(temp_path):
+                os.unlink(temp_path)
 
         if volume.ndim == 4:
             volume = np.nanmean(volume, axis=-1)

@@ -17,9 +17,9 @@ function validateImageFile(file) {
         return false;
     }
 
-    const maxSize = 5 * 1024 * 1024; // 5MB limit
+    const maxSize = 100 * 1024 * 1024; // 100MB limit
     if (file.size > maxSize) {
-        showValidationError('File size exceeds maximum allowed limit of 5MB.');
+        showValidationError('File size exceeds maximum allowed limit of 100MB.');
         return false;
     }
 

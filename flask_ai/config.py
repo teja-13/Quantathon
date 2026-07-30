@@ -17,3 +17,5 @@ class Config:
     MODEL_PATH = os.getenv("MODEL_PATH")
 
     LOG_LEVEL = os.getenv("LOG_LEVEL")
+
+    MAX_CONTENT_LENGTH = 105 * 1024 * 1024

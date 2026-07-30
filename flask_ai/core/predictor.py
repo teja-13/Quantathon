@@ -39,7 +39,7 @@ class Predictor:
             "prediction": "Cancerous" if is_cancerous else "Non-Cancerous",
             "is_cancerous": is_cancerous,
             "confidence": confidence,
-            "probability": round(float(probabilities[1] if is_cancerous else probabilities[0]), 4),
+            "probability": round(float(probabilities[1]), 4),
             "probabilities": {
                 "negative": float(probabilities[0]),
                 "positive": float(probabilities[1]),
